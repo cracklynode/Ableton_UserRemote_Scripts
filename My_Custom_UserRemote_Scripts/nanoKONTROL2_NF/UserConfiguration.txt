@@ -1,0 +1,62 @@
+# Config File for User-defined Instant Mappings
+
+[Globals]
+GlobalChannel: 0
+InputName: nanoKONTROL2 (SLIDER/KNOB)
+OutputName: nanoKONTROL2 (CTRL)
+
+[DeviceControls]
+Encoder1: 16
+Encoder2: 17
+Encoder3: 18
+Encoder4: 19
+Encoder5: 20
+Encoder6: 21
+Encoder7: 22
+Encoder8: 23
+EncoderMapMode: Absolute
+
+[MixerControls]
+VolumeSlider1: 0
+VolumeSlider2: 1
+VolumeSlider3: 2
+VolumeSlider4: 3
+VolumeSlider5: 4
+VolumeSlider6: 5
+VolumeSlider7: 6
+VolumeSlider8: 7
+TrackMuteButton1: 48
+TrackMuteButton2: 49
+TrackMuteButton3: 50
+TrackMuteButton4: 51
+TrackMuteButton5: 52
+TrackMuteButton6: 53
+TrackMuteButton7: 54
+TrackMuteButton8: 55
+TrackSoloButton1: 32
+TrackSoloButton2: 33
+TrackSoloButton3: 34
+TrackSoloButton4: 35
+TrackSoloButton5: 36
+TrackSoloButton6: 37
+TrackSoloButton7: 38
+TrackSoloButton8: 39
+TrackArmButton1: 64
+TrackArmButton2: 65
+TrackArmButton3: 66
+TrackArmButton4: 67
+TrackArmButton5: 68
+TrackArmButton6: 69
+TrackArmButton7: 70
+TrackArmButton8: 71
+PrevBankButton: 58
+NextBankButton: 59
+VolumeMapMode: Absolute
+
+[TransportControls]
+PlayButton: 41
+StopButton: 42
+RwdButton: 43
+FfwdButton: 44
+RecButton: 45
+LoopButton: 46
