@@ -1,0 +1,59 @@
+[Globals]
+GlobalChannel: 0
+InputName: microKONTROL (PORT B)
+OutputName: microKONTROL (CTRL)
+
+[DeviceControls]
+Encoder1: 20
+Encoder2: 21
+Encoder3: 22
+Encoder4: 23
+Encoder5: 24
+Encoder6: 25
+Encoder7: 26
+Encoder8: 27
+EncoderChannel1: -1
+EncoderChannel2: -1
+EncoderChannel3: -1
+EncoderChannel4: -1
+EncoderChannel5: -1
+EncoderChannel6: -1
+EncoderChannel7: -1
+EncoderChannel8: -1
+EncoderMapMode: Absolute
+
+[MixerControls]
+VolumeSlider1: 28
+VolumeSlider2: 29
+VolumeSlider3: 30
+VolumeSlider4: 31
+VolumeSlider5: 32
+VolumeSlider6: 33
+VolumeSlider7: 34
+VolumeSlider8: 35
+Slider1Channel: -1
+Slider2Channel: -1
+Slider3Channel: -1
+Slider4Channel: -1
+Slider5Channel: -1
+Slider6Channel: -1
+Slider7Channel: -1
+Slider8Channel: -1
+TrackSelectButton1: 110
+TrackSelectButton2: 111
+TrackSelectButton3: 112
+TrackSelectButton4: 113
+TrackSelectButton5: 114
+TrackSelectButton6: 115
+TrackSelectButton7: 116
+TrackSelectButton8: 117
+NextBankButton: 109
+PrevBankButton: 108
+
+[TransportControls]
+StopButton: 104
+PlayButton: 105
+RecButton: 106
+LoopButton: 107
+RwdButton: 102
+FfwdButton: 103
