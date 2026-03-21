@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ableton Control Surfaces</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', -apple-system, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: #16213e;
+      padding: 20px 30px;
+      border-bottom: 2px solid #0f3460;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    header h1 span {
+      color: #e94560;
+    }
+    header p {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    /* CONTROLLER TABS */
+    .controller-tabs {
+      display: flex;
+      gap: 12px;
+      padding: 20px 30px;
+      background: #0f0f1a;
+      border-bottom: 1px solid #0f3460;
+      flex-wrap: wrap;
+    }
+    .controller-tab {
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      background: #16213e;
+      color: #888;
+    }
+    .controller-tab:hover { color: #e0e0e0; }
+    .controller-tab.active { color: #fff; }
+    .controller-tab.active.nanoKONTROL2 { background: rgba(233, 69, 96, 0.2); border-color: #e94560; color: #e94560; }
+    .controller-tab.active.microKONTROL { background: rgba(78, 204, 163, 0.2); border-color: #4ecca3; color: #4ecca3; }
+
+    /* MAIN CONTENT */
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 30px;
+    }
+    .controller-view { display: none; }
+    .controller-view.active { display: block; }
+
+    /* SECTION LABELS */
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #666;
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+
+    /* CARDS */
+    .card {
+      background: #16213e;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      border: 1px solid #0f3460;
+    }
+    .card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #0f3460;
+    }
+    .nanoKONTROL2 .card h3 { color: #e94560; }
+    .microKONTROL .card h3 { color: #4ecca3; }
+
+    /* SCENE TABS (for multi-scene controllers) */
+    .scene-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .scene-tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid #0f3460;
+      background: #16213e;
+      color: #888;
+      transition: all 0.2s;
+    }
+    .scene-tab:hover { color: #e0e0e0; }
+    .scene-tab.active { border-color: currentColor; }
+    .microKONTROL .scene-tab.s1.active { border-color: #4ecca3; color: #4ecca3; background: rgba(78, 204, 163, 0.1); }
+    .microKONTROL .scene-tab.s2.active { border-color: #f5a623; color: #f5a623; background: rgba(245, 166, 35, 0.1); }
+    .microKONTROL .scene-tab.s3.active { border-color: #e94560; color: #e94560; background: rgba(233, 69, 96, 0.1); }
+    .scene-content { display: none; }
+    .scene-content.active { display: block; }
+
+    /* TRANSPORT SECTION */
+    .transport-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .transport-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+      height: 50px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #0f2030;
+      border: 2px solid #1a4060;
+      cursor: default;
+      transition: all 0.2s;
+    }
+    .transport-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .transport-btn .btn-fn {
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .transport-btn .btn-cc {
+      font-size: 0.6rem;
+      opacity: 0.5;
+      margin-top: 2px;
+    }
+    .transport-btn.play { border-color: #4ecca3; }
+    .transport-btn.play .btn-fn { color: #4ecca3; }
+    .transport-btn.stop { border-color: #888; }
+    .transport-btn.stop .btn-fn { color: #888; }
+    .transport-btn.rewind { border-color: #4e9cca; }
+    .transport-btn.rewind .btn-fn { color: #4e9cca; }
+    .transport-btn.ffwd { border-color: #4e9cca; }
+    .transport-btn.ffwd .btn-fn { color: #4e9cca; }
+    .transport-btn.record { border-color: #e94560; }
+    .transport-btn.record .btn-fn { color: #e94560; }
+    .transport-btn.loop { border-color: #f5a623; }
+    .transport-btn.loop .btn-fn { color: #f5a623; }
+    .transport-btn.marker { border-color: #9b59b6; }
+    .transport-btn.marker .btn-fn { color: #9b59b6; }
+    .transport-btn.bank { border-color: #e94560; }
+    .transport-btn.bank .btn-fn { color: #e94560; }
+
+    /* CHANNEL STRIPS */
+    .channel-strips {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 10px;
+    }
+    .channel-strip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 4px;
+      background: #0f2030;
+      border-radius: 10px;
+      border: 1px solid #1a4060;
+    }
+    .ch-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+    .nanoKONTROL2 .ch-label { color: #e94560; }
+    .microKONTROL .ch-label { color: #4ecca3; }
+    .knob-wrap {
+      width: 40px;
+      height: 40px;
+      background: #1a3050;
+      border-radius: 50%;
+      border: 3px solid #2a6a9a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .knob-wrap::after {
+      content: '';
+      width: 3px;
+      height: 12px;
+      background: #4e9cca;
+      border-radius: 2px;
+      position: absolute;
+      top: 6px;
+    }
+    .knob-label { font-size: 0.55rem; color: #888; }
+    .fader-wrap {
+      width: 20px;
+      height: 70px;
+      background: #0a1520;
+      border-radius: 10px;
+      border: 1px solid #1a3050;
+      position: relative;
+      overflow: hidden;
+    }
+    .fader-fill {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      border-radius: 0 0 8px 8px;
+    }
+    .nanoKONTROL2 .fader-fill { background: linear-gradient(to top, #e94560, #8a2a3a); }
+    .microKONTROL .fader-fill { background: linear-gradient(to top, #4ecca3, #2a8a6a); }
+    .fader-knob {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 3px;
+      top: 44%;
+    }
+    .cc-label { font-size: 0.5rem; opacity: 0.4; }
+    .btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+    }
+    .strip-btn {
+      padding: 4px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.6rem;
+      font-weight: 600;
+      border: 1px solid;
+    }
+    .strip-btn.solo { background: #1a2a0a; border-color: #f5a623; color: #f5a623; }
+    .strip-btn.mute { background: #1a0a0a; border-color: #888; color: #888; }
+    .strip-btn.arm { background: #2a0a0a; border-color: #e94560; color: #e94560; }
+
+    /* PADS (microKONTROL) */
+    .pad-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+    .pad {
+      border-radius: 8px;
+      padding: 12px 4px;
+      text-align: center;
+      font-size: 0.7rem;
+      cursor: default;
+      transition: transform 0.1s;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .pad:hover { transform: scale(1.05); }
+    .pad .pad-num { font-size: 0.6rem; opacity: 0.5; display: block; }
+    .pad .pad-fn { font-weight: 600; display: block; }
+    .pad .pad-cc { font-size: 0.55rem; opacity: 0.4; display: block; }
+    .pad-transport { background: #1a3a2a; border-color: #4ecca3; }
+    .pad-nav { background: #1a2a3a; border-color: #4e9cca; }
+    .pad-unassigned { background: #1e1e2e; border-color: #333; color: #555; }
+    .pad-track { background: #2a1e0a; border-color: #f5a623; }
+    .pad-drum-kick { background: #2a0a0a; border-color: #e94560; }
+    .pad-drum-snare { background: #2a1a0a; border-color: #f5a623; }
+    .pad-drum-hat { background: #0a1a2a; border-color: #4e9cca; }
+    .pad-drum-tom { background: #1a0a2a; border-color: #9b59b6; }
+    .pad-drum-cymbal { background: #0a2a1a; border-color: #4ecca3; }
+
+    /* OTHER CONTROLS */
+    .other-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .other-item {
+      background: #0f2030;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      border: 1px solid #1a4060;
+      min-width: 140px;
+    }
+    .other-item .oi-label { opacity: 0.6; font-size: 0.65rem; }
+    .other-item .oi-fn { font-weight: 600; margin-top: 4px; }
+
+    /* INFO BOX */
+    .info-box { background: #16213e; border-radius: 12px; padding: 16px 20px; border: 1px solid #0f3460; }
+    .info-box h3 { font-size: 0.85rem; margin-bottom: 12px; }
+    .nanoKONTROL2 .info-box h3 { color: #e94560; }
+    .microKONTROL .info-box h3 { color: #4ecca3; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .info-item { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 6px 0; border-bottom: 1px solid #0f3460; }
+    .info-item .label { color: #888; }
+    .info-item .value { font-weight: 600; }
+    .nanoKONTROL2 .info-item .value { color: #e94560; }
+    .microKONTROL .info-item .value { color: #4ecca3; }
+
+    /* LEGEND */
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #0f3460; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: #aaa; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .channel-strips { grid-template-columns: repeat(4, 1fr); }
+      .pad-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .channel-strips { grid-template-columns: repeat(2, 1fr); }
+      .pad-grid { grid-template-columns: repeat(4, 1fr); }
+      .transport-row { gap: 8px; }
+      .transport-btn { min-width: 55px; height: 45px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Ableton <span>Control Surfaces</span></h1>
+    <p>MIDI Controller Mapping Reference</p>
+  </div>
+</header>
+
+<!-- CONTROLLER TABS -->
+<div class="controller-tabs">
+  <div class="controller-tab nanoKONTROL2 active" onclick="selectController('nanoKONTROL2')">Korg nanoKONTROL2</div>
+  <div class="controller-tab microKONTROL" onclick="selectController('microKONTROL')">Korg microKONTROL</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <!-- ==================== NANO KONTROL 2 ==================== -->
+  <div class="controller-view nanoKONTROL2 active" id="view-nanoKONTROL2">
+    <div class="section-label">Transport Section</div>
+    <div class="card">
+      <div class="transport-row">
+        <div class="transport-btn rewind">
+          <span class="btn-fn">&#9194; Rewind</span>
+          <span class="btn-cc">CC 43</span>
+        </div>
+        <div class="transport-btn ffwd">
+          <span class="btn-fn">&#9193; Fast Fwd</span>
+          <span class="btn-cc">CC 44</span>
+        </div>
+        <div class="transport-btn stop">
+          <span class="btn-fn">&#9209; Stop</span>
+          <span class="btn-cc">CC 42</span>
+        </div>
+        <div class="transport-btn play">
+          <span class="btn-fn">&#9654; Play</span>
+          <span class="btn-cc">CC 41</span>
+        </div>
+        <div class="transport-btn record">
+          <span class="btn-fn">&#9210; Rec</span>
+          <span class="btn-cc">CC 45</span>
+        </div>
+        <div class="transport-btn loop">
+          <span class="btn-fn">&#128257; Cycle</span>
+          <span class="btn-cc">CC 46</span>
+        </div>
+      </div>
+      <div class="transport-row" style="margin-top: 12px">
+        <div class="transport-btn bank">
+          <span class="btn-fn">&#9664; Track Prev</span>
+          <span class="btn-cc">CC 58</span>
+        </div>
+        <div class="transport-btn bank">
+          <span class="btn-fn">&#9654; Track Next</span>
+          <span class="btn-cc">CC 59</span>
+        </div>
+        <div class="transport-btn marker">
+          <span class="btn-fn">&#9198; Marker Prev</span>
+          <span class="btn-cc">CC 60</span>
+        </div>
+        <div class="transport-btn marker">
+          <span class="btn-fn">&#9673; Marker Set</span>
+          <span class="btn-cc">CC 61</span>
+        </div>
+        <div class="transport-btn marker">
+          <span class="btn-fn">&#9197; Marker Next</span>
+          <span class="btn-cc">CC 62</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Channel Strips (Tracks 1–8)</div>
+    <div class="card">
+      <div class="channel-strips">
+        <div class="channel-strip"><span class="ch-label">CH 1</span><div class="knob-wrap"></div><span class="knob-label">CC 16</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 0</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 32</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 48</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 64</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 2</span><div class="knob-wrap"></div><span class="knob-label">CC 17</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 1</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 33</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 49</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 65</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 3</span><div class="knob-wrap"></div><span class="knob-label">CC 18</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 2</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 34</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 50</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 66</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 4</span><div class="knob-wrap"></div><span class="knob-label">CC 19</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 3</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 35</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 51</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 67</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 5</span><div class="knob-wrap"></div><span class="knob-label">CC 20</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 4</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 36</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 52</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 68</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 6</span><div class="knob-wrap"></div><span class="knob-label">CC 21</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 5</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 37</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 53</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 69</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 7</span><div class="knob-wrap"></div><span class="knob-label">CC 22</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 6</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 38</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 54</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 70</span></div></div></div>
+        <div class="channel-strip"><span class="ch-label">CH 8</span><div class="knob-wrap"></div><span class="knob-label">CC 23</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 7</span><div class="btn-row"><div class="strip-btn solo">S<span class="cc-label"> CC 39</span></div><div class="strip-btn mute">M<span class="cc-label"> CC 55</span></div><div class="strip-btn arm">R<span class="cc-label"> CC 71</span></div></div></div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#4ecca3"></div>Play</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e94560"></div>Record / Track Nav</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f5a623"></div>Solo / Cycle</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4e9cca"></div>Rewind / FFwd</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>Markers</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#888"></div>Stop / Mute</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h3>MIDI Configuration</h3>
+      <div class="info-grid">
+        <div class="info-item"><span class="label">Global Channel</span><span class="value">0</span></div>
+        <div class="info-item"><span class="label">Input Port</span><span class="value">nanoKONTROL2 (SLIDER/KNOB)</span></div>
+        <div class="info-item"><span class="label">Output Port</span><span class="value">nanoKONTROL2 (CTRL)</span></div>
+        <div class="info-item"><span class="label">Encoder Map Mode</span><span class="value">Absolute</span></div>
+        <div class="info-item"><span class="label">Volume Map Mode</span><span class="value">Absolute</span></div>
+        <div class="info-item"><span class="label">Bank Navigation</span><span class="value">CC 58 / CC 59</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== MICRO KONTROL ==================== -->
+  <div class="controller-view microKONTROL" id="view-microKONTROL">
+
+    <!-- SCENE TABS -->
+    <div class="scene-tabs">
+      <div class="scene-tab s1 active" onclick="selectScene(1)">Scene 1 — Play</div>
+      <div class="scene-tab s2" onclick="selectScene(2)">Scene 2 — Mixer</div>
+      <div class="scene-tab s3" onclick="selectScene(3)">Scene 3 — Drummer</div>
+    </div>
+
+    <!-- SCENE 1: PLAY -->
+    <div class="scene-content s1 active" id="micro-s1">
+      <div class="section-label">Transport & Navigation</div>
+      <div class="card">
+        <h3>Pads — Transport &amp; Navigation</h3>
+        <div class="pad-grid">
+          <div class="pad pad-transport"><span class="pad-num">Pad 1</span><span class="pad-fn">&#9194; Rewind</span><span class="pad-cc">CC 102</span></div>
+          <div class="pad pad-transport"><span class="pad-num">Pad 2</span><span class="pad-fn">&#9193; Fast Fwd</span><span class="pad-cc">CC 103</span></div>
+          <div class="pad pad-transport"><span class="pad-num">Pad 3</span><span class="pad-fn">&#9209; Stop</span><span class="pad-cc">CC 104</span></div>
+          <div class="pad pad-transport"><span class="pad-num">Pad 4</span><span class="pad-fn">&#9654; Play</span><span class="pad-cc">CC 105</span></div>
+          <div class="pad pad-transport"><span class="pad-num">Pad 5</span><span class="pad-fn">&#9210; Record</span><span class="pad-cc">CC 106</span></div>
+          <div class="pad pad-transport"><span class="pad-num">Pad 6</span><span class="pad-fn">&#128257; Loop</span><span class="pad-cc">CC 107</span></div>
+          <div class="pad pad-nav"><span class="pad-num">Pad 7</span><span class="pad-fn">&#9664; Prev Bank</span><span class="pad-cc">CC 108</span></div>
+          <div class="pad pad-nav"><span class="pad-num">Pad 8</span><span class="pad-fn">&#9654; Next Bank</span><span class="pad-cc">CC 109</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 9</span><span class="pad-fn">—</span><span class="pad-cc">CC 110</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 10</span><span class="pad-fn">—</span><span class="pad-cc">CC 111</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 11</span><span class="pad-fn">—</span><span class="pad-cc">CC 112</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 12</span><span class="pad-fn">—</span><span class="pad-cc">CC 113</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 13</span><span class="pad-fn">—</span><span class="pad-cc">CC 114</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 14</span><span class="pad-fn">—</span><span class="pad-cc">CC 115</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 15</span><span class="pad-fn">—</span><span class="pad-cc">CC 116</span></div>
+          <div class="pad pad-unassigned"><span class="pad-num">Pad 16</span><span class="pad-fn">—</span><span class="pad-cc">CC 117</span></div>
+        </div>
+      </div>
+
+      <div class="section-label">Encoders & Sliders</div>
+      <div class="card">
+        <h3>Encoders — Track Pan</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">E1</span><div class="knob-wrap"></div><span class="knob-label">CC 20</span></div>
+          <div class="channel-strip"><span class="ch-label">E2</span><div class="knob-wrap"></div><span class="knob-label">CC 21</span></div>
+          <div class="channel-strip"><span class="ch-label">E3</span><div class="knob-wrap"></div><span class="knob-label">CC 22</span></div>
+          <div class="channel-strip"><span class="ch-label">E4</span><div class="knob-wrap"></div><span class="knob-label">CC 23</span></div>
+          <div class="channel-strip"><span class="ch-label">E5</span><div class="knob-wrap"></div><span class="knob-label">CC 24</span></div>
+          <div class="channel-strip"><span class="ch-label">E6</span><div class="knob-wrap"></div><span class="knob-label">CC 25</span></div>
+          <div class="channel-strip"><span class="ch-label">E7</span><div class="knob-wrap"></div><span class="knob-label">CC 26</span></div>
+          <div class="channel-strip"><span class="ch-label">E8</span><div class="knob-wrap"></div><span class="knob-label">CC 27</span></div>
+        </div>
+        <p style="font-size:0.75rem;color:#888;margin-top:12px">Encoders 1–8 control Pan for Tracks 1–8</p>
+      </div>
+
+      <div class="card">
+        <h3>Sliders — Track Volume</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">S1</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 28</span></div>
+          <div class="channel-strip"><span class="ch-label">S2</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 29</span></div>
+          <div class="channel-strip"><span class="ch-label">S3</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 30</span></div>
+          <div class="channel-strip"><span class="ch-label">S4</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 31</span></div>
+          <div class="channel-strip"><span class="ch-label">S5</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 32</span></div>
+          <div class="channel-strip"><span class="ch-label">S6</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 33</span></div>
+          <div class="channel-strip"><span class="ch-label">S7</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 34</span></div>
+          <div class="channel-strip"><span class="ch-label">S8</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 35</span></div>
+        </div>
+        <p style="font-size:0.75rem;color:#888;margin-top:12px">Sliders 1–8 control Volume for Tracks 1–8</p>
+      </div>
+
+      <div class="card">
+        <h3>Other Controls</h3>
+        <div class="other-row">
+          <div class="other-item"><div class="oi-label">Pedal (Port A)</div><div class="oi-fn">Sustain / Damper</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X+ (CC1)</div><div class="oi-fn">Modulation Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X− (CC1)</div><div class="oi-fn">Modulation Down</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y+</div><div class="oi-fn">Pitch Bend Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y−</div><div class="oi-fn">Pitch Bend Down</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 2: MIXER -->
+    <div class="scene-content s2" id="micro-s2">
+      <div class="section-label">Track Selection</div>
+      <div class="card">
+        <h3>Pads — Select Track 1–16</h3>
+        <div class="pad-grid">
+          <div class="pad pad-track"><span class="pad-num">Pad 1</span><span class="pad-fn">Track 1</span><span class="pad-cc">CC 110</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 2</span><span class="pad-fn">Track 2</span><span class="pad-cc">CC 111</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 3</span><span class="pad-fn">Track 3</span><span class="pad-cc">CC 112</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 4</span><span class="pad-fn">Track 4</span><span class="pad-cc">CC 113</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 5</span><span class="pad-fn">Track 5</span><span class="pad-cc">CC 114</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 6</span><span class="pad-fn">Track 6</span><span class="pad-cc">CC 115</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 7</span><span class="pad-fn">Track 7</span><span class="pad-cc">CC 116</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 8</span><span class="pad-fn">Track 8</span><span class="pad-cc">CC 117</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 9</span><span class="pad-fn">Track 9</span><span class="pad-cc">CC 118</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 10</span><span class="pad-fn">Track 10</span><span class="pad-cc">CC 119</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 11</span><span class="pad-fn">Track 11</span><span class="pad-cc">CC 120</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 12</span><span class="pad-fn">Track 12</span><span class="pad-cc">CC 121</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 13</span><span class="pad-fn">Track 13</span><span class="pad-cc">CC 122</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 14</span><span class="pad-fn">Track 14</span><span class="pad-cc">CC 123</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 15</span><span class="pad-fn">Track 15</span><span class="pad-cc">CC 124</span></div>
+          <div class="pad pad-track"><span class="pad-num">Pad 16</span><span class="pad-fn">Track 16</span><span class="pad-cc">CC 125 Ch9</span></div>
+        </div>
+      </div>
+
+      <div class="section-label">Encoders & Sliders</div>
+      <div class="card">
+        <h3>Encoders — Track Pan</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">E1</span><div class="knob-wrap"></div><span class="knob-label">CC 20</span></div>
+          <div class="channel-strip"><span class="ch-label">E2</span><div class="knob-wrap"></div><span class="knob-label">CC 21</span></div>
+          <div class="channel-strip"><span class="ch-label">E3</span><div class="knob-wrap"></div><span class="knob-label">CC 22</span></div>
+          <div class="channel-strip"><span class="ch-label">E4</span><div class="knob-wrap"></div><span class="knob-label">CC 23</span></div>
+          <div class="channel-strip"><span class="ch-label">E5</span><div class="knob-wrap"></div><span class="knob-label">CC 24</span></div>
+          <div class="channel-strip"><span class="ch-label">E6</span><div class="knob-wrap"></div><span class="knob-label">CC 25</span></div>
+          <div class="channel-strip"><span class="ch-label">E7</span><div class="knob-wrap"></div><span class="knob-label">CC 26</span></div>
+          <div class="channel-strip"><span class="ch-label">E8</span><div class="knob-wrap"></div><span class="knob-label">CC 27</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Sliders — Track Volume</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">S1</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 28</span></div>
+          <div class="channel-strip"><span class="ch-label">S2</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 29</span></div>
+          <div class="channel-strip"><span class="ch-label">S3</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 30</span></div>
+          <div class="channel-strip"><span class="ch-label">S4</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 31</span></div>
+          <div class="channel-strip"><span class="ch-label">S5</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 32</span></div>
+          <div class="channel-strip"><span class="ch-label">S6</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 33</span></div>
+          <div class="channel-strip"><span class="ch-label">S7</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 34</span></div>
+          <div class="channel-strip"><span class="ch-label">S8</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 35 Ch8</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Other Controls</h3>
+        <div class="other-row">
+          <div class="other-item"><div class="oi-label">Pedal (Port A)</div><div class="oi-fn">Sustain / Damper</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X+ (CC1)</div><div class="oi-fn">Modulation Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X− (CC1)</div><div class="oi-fn">Modulation Down</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y+</div><div class="oi-fn">Pitch Bend Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y−</div><div class="oi-fn">Pitch Bend Down</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENE 3: DRUMMER -->
+    <div class="scene-content s3" id="micro-s3">
+      <div class="section-label">Drum Pads</div>
+      <div class="card">
+        <h3>Pads — Ableton Drum Rack</h3>
+        <div class="pad-grid">
+          <div class="pad pad-drum-cymbal"><span class="pad-num">Pad 1</span><span class="pad-fn">G#2 Crash</span><span class="pad-cc">Note 44</span></div>
+          <div class="pad pad-drum-cymbal"><span class="pad-num">Pad 2</span><span class="pad-fn">A2 Ride</span><span class="pad-cc">Note 45</span></div>
+          <div class="pad pad-drum-cymbal"><span class="pad-num">Pad 3</span><span class="pad-fn">A#2 Crash 2</span><span class="pad-cc">Note 46</span></div>
+          <div class="pad pad-drum-cymbal"><span class="pad-num">Pad 4</span><span class="pad-fn">B2 Ride 2</span><span class="pad-cc">Note 47</span></div>
+          <div class="pad pad-drum-hat"><span class="pad-num">Pad 5</span><span class="pad-fn">E2 Closed Hat</span><span class="pad-cc">Note 40</span></div>
+          <div class="pad pad-drum-hat"><span class="pad-num">Pad 6</span><span class="pad-fn">F2 Pedal Hat</span><span class="pad-cc">Note 41</span></div>
+          <div class="pad pad-drum-hat"><span class="pad-num">Pad 7</span><span class="pad-fn">F#2 Open Hat</span><span class="pad-cc">Note 42</span></div>
+          <div class="pad pad-drum-tom"><span class="pad-num">Pad 8</span><span class="pad-fn">G2 Mid Tom</span><span class="pad-cc">Note 43</span></div>
+          <div class="pad pad-drum-kick"><span class="pad-num">Pad 9</span><span class="pad-fn">C2 Kick</span><span class="pad-cc">Note 36</span></div>
+          <div class="pad pad-drum-snare"><span class="pad-num">Pad 10</span><span class="pad-fn">C#2 Kick 2</span><span class="pad-cc">Note 37</span></div>
+          <div class="pad pad-drum-snare"><span class="pad-num">Pad 11</span><span class="pad-fn">D2 Snare</span><span class="pad-cc">Note 38</span></div>
+          <div class="pad pad-drum-snare"><span class="pad-num">Pad 12</span><span class="pad-fn">D#2 Snare 2</span><span class="pad-cc">Note 39</span></div>
+          <div class="pad" style="background:#1a2a3a;border-color:#4e9cca;"><span class="pad-num">Pad 13</span><span class="pad-fn">C3</span><span class="pad-cc">Note 48</span></div>
+          <div class="pad" style="background:#1a2a3a;border-color:#4e9cca;"><span class="pad-num">Pad 14</span><span class="pad-fn">C#3</span><span class="pad-cc">Note 49</span></div>
+          <div class="pad" style="background:#1a2a3a;border-color:#4e9cca;"><span class="pad-num">Pad 15</span><span class="pad-fn">D3</span><span class="pad-cc">Note 50</span></div>
+          <div class="pad" style="background:#1a2a3a;border-color:#4e9cca;"><span class="pad-num">Pad 16</span><span class="pad-fn">D#3</span><span class="pad-cc">Note 51</span></div>
+        </div>
+        <div class="legend" style="margin-top:16px">
+          <div class="legend-item"><div class="legend-dot" style="background:#4ecca3"></div>Cymbal</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4e9cca"></div>Hi-Hat / Extra</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div>Tom</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f5a623"></div>Snare</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e94560"></div>Kick</div>
+        </div>
+      </div>
+
+      <div class="section-label">Encoders & Sliders</div>
+      <div class="card">
+        <h3>Encoders — Send A</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">E1</span><div class="knob-wrap"></div><span class="knob-label">CC 20</span></div>
+          <div class="channel-strip"><span class="ch-label">E2</span><div class="knob-wrap"></div><span class="knob-label">CC 21</span></div>
+          <div class="channel-strip"><span class="ch-label">E3</span><div class="knob-wrap"></div><span class="knob-label">CC 22</span></div>
+          <div class="channel-strip"><span class="ch-label">E4</span><div class="knob-wrap"></div><span class="knob-label">CC 23</span></div>
+          <div class="channel-strip"><span class="ch-label">E5</span><div class="knob-wrap"></div><span class="knob-label">CC 24</span></div>
+          <div class="channel-strip"><span class="ch-label">E6</span><div class="knob-wrap"></div><span class="knob-label">CC 25</span></div>
+          <div class="channel-strip"><span class="ch-label">E7</span><div class="knob-wrap"></div><span class="knob-label">CC 26</span></div>
+          <div class="channel-strip"><span class="ch-label">E8</span><div class="knob-wrap"></div><span class="knob-label">CC 27</span></div>
+        </div>
+        <p style="font-size:0.75rem;color:#888;margin-top:12px">Encoders 1–8 control Send A (e.g. Reverb)</p>
+      </div>
+
+      <div class="card">
+        <h3>Sliders — Send B</h3>
+        <div class="channel-strips">
+          <div class="channel-strip"><span class="ch-label">S1</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 28</span></div>
+          <div class="channel-strip"><span class="ch-label">S2</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 29</span></div>
+          <div class="channel-strip"><span class="ch-label">S3</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 30</span></div>
+          <div class="channel-strip"><span class="ch-label">S4</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 31</span></div>
+          <div class="channel-strip"><span class="ch-label">S5</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 32</span></div>
+          <div class="channel-strip"><span class="ch-label">S6</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 33</span></div>
+          <div class="channel-strip"><span class="ch-label">S7</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 34</span></div>
+          <div class="channel-strip"><span class="ch-label">S8</span><div class="fader-wrap"><div class="fader-fill"></div><div class="fader-knob"></div></div><span class="cc-label">CC 35 Ch8</span></div>
+        </div>
+        <p style="font-size:0.75rem;color:#888;margin-top:12px">Sliders 1–8 control Send B (e.g. Delay)</p>
+      </div>
+
+      <div class="card">
+        <h3>Other Controls</h3>
+        <div class="other-row">
+          <div class="other-item"><div class="oi-label">Pedal (Port A)</div><div class="oi-fn">Sustain / Damper</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X+ (CC1)</div><div class="oi-fn">Modulation Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick X− (CC1)</div><div class="oi-fn">Modulation Down</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y+</div><div class="oi-fn">Pitch Bend Up</div></div>
+          <div class="other-item"><div class="oi-label">Joystick Y−</div><div class="oi-fn">Pitch Bend Down</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h3>MIDI Configuration</h3>
+      <div class="info-grid">
+        <div class="info-item"><span class="label">Global Channel</span><span class="value">0</span></div>
+        <div class="info-item"><span class="label">Input Port</span><span class="value">microKONTROL (PORT B)</span></div>
+        <div class="info-item"><span class="label">Output Port</span><span class="value">microKONTROL (CTRL)</span></div>
+        <div class="info-item"><span class="label">Encoder Map Mode</span><span class="value">Absolute</span></div>
+        <div class="info-item"><span class="label">Sliders Map Mode</span><span class="value">Absolute</span></div>
+        <div class="info-item"><span class="label">Scene Switching</span><span class="value">Manual (on device)</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function selectController(id) {
+    // Update tabs
+    document.querySelectorAll('.controller-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelector('.controller-tab.' + id).classList.add('active');
+    
+    // Update views
+    document.querySelectorAll('.controller-view').forEach(view => view.classList.remove('active'));
+    document.getElementById('view-' + id).classList.add('active');
+    
+    // Reset scene tabs if switching to microKONTROL
+    if (id === 'microKONTROL') {
+      selectScene(1);
+    }
+  }
+  
+  function selectScene(num) {
+    // Update scene tabs
+    document.querySelectorAll('.scene-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.scene-tab.s' + num).forEach(tab => tab.classList.add('active'));
+    
+    // Update scene content
+    document.querySelectorAll('.scene-content').forEach(content => content.classList.remove('active'));
+    document.getElementById('micro-s' + num).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
