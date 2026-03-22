@@ -1,0 +1,95 @@
+nanoKEY Studio - Scene Mappings with Ableton Functions
+=========================================================
+
+Scene 1 - Play Scene
+--------------------
+Purpose: Playing Ableton Drum Rack instruments via the keyboard pads.
+
+Encoders (Device Controls - control parameters of the selected device)
+- Knob 1: CC# 20  -> Ableton Device Parameter 1
+- Knob 2: CC# 21  -> Ableton Device Parameter 2
+- Knob 3: CC# 22  -> Ableton Device Parameter 3
+- Knob 4: CC# 23  -> Ableton Device Parameter 4
+- Knob 5: CC# 24  -> Ableton Device Parameter 5
+- Knob 6: CC# 25  -> Ableton Device Parameter 6
+- Knob 7: CC# 26  -> Ableton Device Parameter 7
+- Knob 8: CC# 27  -> Ableton Device Parameter 8
+
+Trigger Pads (Drum Rack Notes - mapped to Ableton Drum Rack pads)
+- Pad 1: Note E2  (MIDI note 52) -> Drum Rack Pad position 1
+- Pad 2: Note F2  (MIDI note 53) -> Drum Rack Pad position 2
+- Pad 3: Note F#2 (MIDI note 54) -> Drum Rack Pad position 3
+- Pad 4: Note G2  (MIDI note 55) -> Drum Rack Pad position 4
+- Pad 5: Note C2  (MIDI note 48) -> Drum Rack Pad position 5
+- Pad 6: Note C#2 (MIDI note 49) -> Drum Rack Pad position 6
+- Pad 7: Note D2  (MIDI note 50) -> Drum Rack Pad position 7
+- Pad 8: Note D#2 (MIDI note 51) -> Drum Rack Pad position 8
+
+
+Scene 2 - Navigation and Transport Scene
+-----------------------------------------
+Purpose: Controlling Ableton transport and mixer faders.
+
+Encoders (Mixer Controls - Volume Sliders for tracks 1-8)
+- Knob 1: CC# 28  -> Track 1 Volume Fader
+- Knob 2: CC# 29  -> Track 2 Volume Fader
+- Knob 3: CC# 30  -> Track 3 Volume Fader
+- Knob 4: CC# 31  -> Track 4 Volume Fader
+- Knob 5: CC# 33  -> Track 5 Volume Fader
+- Knob 6: CC# 34  -> Track 6 Volume Fader
+- Knob 7: CC# 35  -> Track 7 Volume Fader
+- Knob 8: CC# 36  -> Track 8 Volume Fader
+
+Trigger Pads (Transport Controls)
+- Pad 1: CC# 102  -> Rewind
+- Pad 2: CC# 103  -> Fast Forward
+- Pad 3: CC# 104  -> Stop
+- Pad 4: CC# 105  -> Play
+- Pad 5: CC# 106  -> Record
+- Pad 6: CC# 107  -> Loop Toggle
+- Pad 7: CC# 108  -> Previous Bank
+- Pad 8: CC# 109  -> Next Bank
+
+
+Scene 3 - Mixing Scene (Updated)
+---------------------------------
+Purpose: Selecting tracks 1-8 and adjusting volume levels.
+
+Encoders (Mixer Controls - Volume Sliders for tracks 1-8)
+- Knob 1: CC# 28  -> Track 1 Volume Fader
+- Knob 2: CC# 29  -> Track 2 Volume Fader
+- Knob 3: CC# 30  -> Track 3 Volume Fader
+- Knob 4: CC# 31  -> Track 4 Volume Fader
+- Knob 5: CC# 33  -> Track 5 Volume Fader
+- Knob 6: CC# 34  -> Track 6 Volume Fader
+- Knob 7: CC# 35  -> Track 7 Volume Fader
+- Knob 8: CC# 36  -> Track 8 Volume Fader
+
+Note: Encoders in Scene 3 have been remapped in the Korg Editor to match 
+Scene 2 (Option 1), allowing consistent volume control while selecting tracks.
+
+Trigger Pads (Mixer Controls - Track Select Buttons)
+- Pad 1: CC# 110  -> Select Track 1
+- Pad 2: CC# 111  -> Select Track 2
+- Pad 3: CC# 112  -> Select Track 3
+- Pad 4: CC# 113  -> Select Track 4
+- Pad 5: CC# 114  -> Select Track 5
+- Pad 6: CC# 115  -> Select Track 6
+- Pad 7: CC# 116  -> Select Track 7
+- Pad 8: CC# 117  -> Select Track 8
+
+
+Scene 4 - (Unconfirmed / Possibly Factory Default)
+----------------------------------------------------
+Purpose: Unknown - CC# range not referenced in the Ableton script.
+
+Encoders: CC# 45-52 (No function assigned)
+Trigger Pads: CC# 118-125 (No function assigned)
+
+
+Global Controls
+---------------
+- Sustain button: CC# 64  -> Sustain
+- X-axis: CC# 1           -> Modulation
+- Y-axis: CC# 19          -> Undefined
+- MIDI Channel: Global (Channel 0)

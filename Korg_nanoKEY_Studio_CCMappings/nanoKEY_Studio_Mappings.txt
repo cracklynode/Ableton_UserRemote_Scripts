@@ -1,0 +1,127 @@
+nanoKEY Studio Mappings
+
+Scene 1 - Play Scene
+
+Knob mappings (CC#)
+- Knob 1: CC# 20
+- Knob 2: CC# 21
+- Knob 3: CC# 22
+- Knob 4: CC# 23
+- Knob 5: CC# 24
+- Knob 6: CC# 25
+- Knob 7: CC# 26
+- Knob 8: CC# 27
+
+Trigger pad mappings (Notes)
+- Pad 1: Note E2
+- Pad 2: Note F2
+- Pad 3: Note F#2
+- Pad 4: Note G2
+- Pad 5: Note C2
+- Pad 6: Note C#2
+- Pad 7: Note D2
+- Pad 8: Note D#2
+
+Other controls
+- Sustain button: CC# 64
+- X-axis: CC# 1
+- Y-axis: CC# 19
+- Pitch/Mod: Not assigned
+
+Intended use
+- Pads mapped to Ableton Drum Instrument
+
+Scene 2 - Navigation and Transport Scene
+
+Knob mappings (CC#)
+- Knob 1: CC# 28
+- Knob 2: CC# 29
+- Knob 3: CC# 30
+- Knob 4: CC# 31
+- Knob 5: CC# 33
+- Knob 6: CC# 34
+- Knob 7: CC# 35
+- Knob 8: CC# 36
+
+Trigger pad mappings (CC#)
+- Pad 1: CC# 102
+- Pad 2: CC# 103
+- Pad 3: CC# 104
+- Pad 4: CC# 105
+- Pad 5: CC# 106
+- Pad 6: CC# 107
+- Pad 7: CC# 108
+- Pad 8: CC# 109
+
+Other controls
+- Sustain button: CC# 64
+- X-axis: CC# 1
+- Y-axis: CC# 19
+- Pitch/Mod: Not assigned
+
+Intended use
+- Pads control transport functions and basic navigation
+- Encoders control mixer faders
+
+Scene 3 - Track Selection Scene
+
+Knob mappings (CC#)
+- Knob 1: CC# 37
+- Knob 2: CC# 38
+- Knob 3: CC# 39
+- Knob 4: CC# 40
+- Knob 5: CC# 41
+- Knob 6: CC# 42
+- Knob 7: CC# 43
+- Knob 8: CC# 44
+
+Trigger pad mappings (CC#)
+- Pad 1: CC# 110
+- Pad 2: CC# 111
+- Pad 3: CC# 112
+- Pad 4: CC# 113
+- Pad 5: CC# 114
+- Pad 6: CC# 115
+- Pad 7: CC# 116
+- Pad 8: CC# 117
+
+Other controls
+- Sustain button: CC# 64
+- X-axis: CC# 1
+- Y-axis: CC# 19
+- Pitch/Mod: Not assigned
+
+Intended use
+- Pads select tracks 1-8
+- Encoders transmit CC# 37-44 but do not currently appear to control anything in Ableton
+
+Scene 4
+
+Knob mappings (CC#)
+- Knob 1: CC# 45
+- Knob 2: CC# 46
+- Knob 3: CC# 47
+- Knob 4: CC# 48
+- Knob 5: CC# 49
+- Knob 6: CC# 50
+- Knob 7: CC# 51
+- Knob 8: CC# 52
+
+Trigger pad mappings (CC#)
+- Pad 1: CC# 118
+- Pad 2: CC# 119
+- Pad 3: CC# 120
+- Pad 4: CC# 121
+- Pad 5: CC# 122
+- Pad 6: CC# 123
+- Pad 7: CC# 124
+- Pad 8: CC# 125
+
+Other controls
+- Sustain button: CC# 64
+- X-axis: CC# 1
+- Y-axis: CC# 19
+- Pitch/Mod: Not assigned
+
+Notes
+- Scene 4 may be factory/default settings
