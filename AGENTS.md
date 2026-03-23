@@ -21,7 +21,9 @@ Ableton_UserRemote_Scripts/
 │   ├── microKONTROL_NF/
 │   ├── nanoKEY Studio_NF/
 │   └── Akai MPD218_NF/
-└── Korg_nanoKONTOL2_CCMappings/    # Reference documentation
+├── Korg_nanoKONTROL2_CCMappings/   # Reference documentation
+├── Korg_nanoKEY_Studio_CCMappings/ # Reference documentation
+└── index.html                      # Web app for visualizing controller mappings
 ```
 
 ## Validation & Testing
@@ -159,3 +161,33 @@ EncoderMapMode: Absolute
 - **Full template**: `Ableton_Template_and_instructions/UserConfiguration.txt`
 - **Real-world example**: `My_Custom_UserRemote_Scripts/nanoKONTROL2_NF/UserConfiguration.txt`
 - **CC mappings**: `Korg_nanoKontrol2_CCMappings/nanoKontrol2mappings.md`
+
+## Web Application
+
+The repository includes a reference web app (`index.html`) that visualizes MIDI controller mappings for all supported controllers. Hosted on GitHub Pages.
+
+### Development Workflow
+
+1. **Work locally on `dev` branch:**
+   ```bash
+   git checkout dev
+   # Make changes to index.html
+   git add .
+   git commit -m "description"
+   git push origin dev
+   ```
+
+2. **Create PR on GitHub:**
+   - Go to: `https://github.com/cracklynode/Ableton_UserRemote_Scripts/pull/new/dev`
+   - Set base: `main` ← compare: `dev`
+   - Create and merge the pull request
+
+3. **GitHub Pages auto-updates** after PR merge (~1-2 minutes)
+
+4. **Update local branches** after merge:
+   ```bash
+   git checkout main
+   git pull origin main
+   git checkout dev
+   git merge main
+   ```
